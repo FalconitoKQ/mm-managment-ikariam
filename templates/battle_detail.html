@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Szczegóły Bitwy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='static-battle_detail.css') }}">
+  <style>
+    /* Dodatkowe style dla przycisków filtrów */
+    #filter-options { margin-bottom: 10px; }
+    #filter-options button { margin-right: 5px; padding: 5px 10px; }
+    /* Podświetlenie zaznaczonej komórki */
+    .selected { background-color: #cce5ff; }
+  </style>
+</head>
+<body>
+  <!-- Pasek nawigacyjny -->
+  <div class="navigation-wrapper">
+    {% include 'navigation.html' %}
+  </div>
+
+  <div class="strona">
+    <h1>Szczegóły Bitwy</h1>
+    <p><strong>ID:</strong> {{ battle.id_add_battle_db }}</p>
+    <p><strong>Nazwa miasta:</strong> {{ battle.city_name }}</p>
+    <p><strong>Koordynaty:</strong> {{ battle.coordinates }}</p>
+    <p><strong>Typ bitwy:</strong> {{ battle.battle_type }}</p>
+    <p><strong>Nazwa przeciwnika:</strong> {{ battle.opponent_name }}</p>
+    <p><a href="{{ url_for('battle.battles_list') }}">Powrót do listy bitew</a></p>
+
+    <!-- Statystyki jednostek -->
+    <section>
+      <h2>Statystyki jednostek</h2>
+
+      {% if battleship %}
+      <div class="tables-grid">
+        <!-- 1) Ilość jednostek -->
+        <div class="scrollable">
+          <table class="stats">
+            <caption>Ilość jednostek</caption>
+            <thead>
+              <tr>
+                <th>Taran parowy</th>
+                <th>Okręt z taranem</th>
+                <th>Krążownik</th>
+                <th>Balonowiec</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ battleship.stock_taran_parowy|default('—') }}</td>
+                <td>{{ battleship.stock_okret_z_taranem|default('—') }}</td>
+                <td>{{ battleship.stock_krazownik|default('—') }}</td>
+                <td>{{ battleship.stock_balonowiec|default('—') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2) Na ile rund wystarczy -->
+        <div class="scrollable">
+          <table class="stats">
+            <caption>Na ile rund wystarczy</caption>
+            <thead>
+              <tr>
+                <th>Taran parowy</th>
+                <th>Okręt z taranem</th>
+                <th>Krążownik</th>
+                <th>Balonowiec</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ battleship.number_of_rounds_for_taran_parowy|default('—') }}</td>
+                <td>{{ battleship.number_of_rounds_for_okret_z_taranem|default('—') }}</td>
+                <td>{{ battleship.number_of_rounds_for_krazownik|default('—') }}</td>
+                <td>{{ battleship.number_of_rounds_for_balonowiec|default('—') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 3) Czas (do kiedy wystarczą) -->
+        <div class="scrollable">
+          <table class="stats">
+            <caption>Czas (do kiedy wystarczą)</caption>
+            <thead>
+              <tr>
+                <th>Taran parowy</th>
+                <th>Okręt z taranem</th>
+                <th>Krążownik</th>
+                <th>Balonowiec</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ battleship.time_round_for_taran_parowy|default('—') }}</td>
+                <td>{{ battleship.time_round_for_okret_z_taranem|default('—') }}</td>
+                <td>{{ battleship.time_round_for_krazownik|default('—') }}</td>
+                <td>{{ battleship.time_round_for_balonowiec|default('—') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% else %}
+        <p>Brak statystyk dla tej bitwy. Dodaj je poniżej:</p>
+      {% endif %}
+    </section>
+    
+    <!-- Formularz aktualizacji statystyk -->
+    <section>
+      <h2>Dodaj lub zaktualizuj dane o statkach</h2>
+      <form method="POST" action="{{ url_for('battle.battle_detail', battle_id=battle.id_add_battle_db) }}">
+        <!-- Dodany token CSRF -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="form-group">
+          <label for="stock_taran_parowy">Taran parowy:</label>
+          <input type="number" name="stock_taran_parowy" id="stock_taran_parowy" value="0">
+        </div>    
+        <div class="form-group">
+          <label for="stock_okret_z_taranem">Okręt z taranem:</label>
+          <input type="number" name="stock_okret_z_taranem" id="stock_okret_z_taranem" value="0">
+        </div>
+        <div class="form-group">
+          <label for="stock_krazownik">Krążownik:</label>
+          <input type="number" name="stock_krazownik" id="stock_krazownik" value="0">
+        </div>
+        <div class="form-group">
+          <label for="stock_balonowiec">Balonowiec:</label>
+          <input type="number" name="stock_balonowiec" id="stock_balonowiec" value="0">
+        </div>
+        <button type="submit">Zapisz</button>
+      </form>
+    </section>
+
+    <!-- komentarz -->
+     <section>
+      <h2>Dodaj komentarz</h2>
+      <form method="POST" action="{{ url_for('battle.add_comment', battle_id=battle.id_add_battle_db) }}">
+        <!-- Dodany token CSRF -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="form-group">
+          <label for="comment">Komentarz:</label>
+          <textarea name="comment" id="comment" rows="4" required></textarea>
+        </div>
+        <button type="submit">Dodaj komentarz</button>
+      </form>
+      <h3>Lista komentarzy</h3>
+      {% if comments %}
+        <ul>
+          {% for comment in comments %}
+            <li>
+              <strong>{{ comment.user }}:</strong> {{ comment.text }}<br>
+              <span class="comment-date">{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Brak komentarzy.</p>
+      {% endif %}
+
+     </section>
+
+    <div class="strona">
+      <h1>Tabela Slotów Bitwy</h1>
+      <p><a href="{{ url_for('battle.battles_list') }}">Powrót do listy bitew</a></p>
+  
+      <section>
+        <h2>Lista Slotów</h2>
+        <!-- Tabela zawiera kolumny: Lp, Data, Godzina, Użytkownik, Ilość, Akcja -->
+        <table>
+          <thead>
+            <tr>
+              <th>Lp.</th>
+              <th>Data</th>
+              <th>Godzina</th>
+              <th>Użytkownik</th>
+              <th>Ilość</th>
+              <th>Akcja</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for slot in slots %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ slot.date }}</td>
+              <td>{{ slot.time }}</td>
+              <td>
+                {% if slot.user %}
+                  {{ slot.user }}
+                {% else %}
+                  Wolny
+                {% endif %}
+              </td>
+              <td>
+                {% if slot.units %}
+                  {{ slot.units }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                <!-- Jeżeli slot jest wolny, link do zapisu -->
+                {% if not slot.user %}
+                  <!-- Możesz dodać argument ?units=liczba jeśli chcesz -->
+                  <a href="{{ url_for('battle.signup_slot', slot_id=slot.id) }}?units=1">Zapisz się</a>
+                {% else %}
+                  {% if slot.user == session.get('username') %}
+                    Już zapisany (Ty)
+                  {% else %}
+                    Zajęty
+                  {% endif %}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+  
+    <section>
+      <a href="{{ url_for('battle.battles_list') }}">Powrót do listy bitew</a>
+    </section>
+  
+    <!-- Wyświetlanie komunikatów (flash messages) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+  
+  <!-- Socket.IO client -->
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const baseSignupUrl = "{{ url_for('battle.signup_slot', slot_id=0) }}".slice(0, -1);
+    const currentUser = "{{ session.get('username') }}";
+  
+    socket.on('slot_update', function(data) {
+      const checkbox = document.querySelector(
+        'input[type="checkbox"][value="' + data.slot_id + '"]'
+      );
+      if (checkbox) {
+        // Slot był wolny (checkbox istniał) – zaktualizuj na zajęty
+        const td = checkbox.closest('td');
+        if (data.status === 'occupied') {
+          const contentDiv = td.querySelector('.slot-content');
+          if (contentDiv) {
+            contentDiv.innerHTML = (data.user === currentUser)
+              ? `Zajęty przez Ciebie (${data.units} jednostek)`
+              : `Zajęty przez ${data.user} (${data.units} jednostek)<br>
+                 <a href="${baseSignupUrl + data.slot_id}">Próbuj się zapisać</a>`;
+          }
+          // Oznacz slot jako zajęty: wyłącz checkbox i usuń podświetlenie
+          checkbox.disabled = true;
+          td.classList.remove('selected');
+        }
+      } else {
+        // Slot był już zajęty – odśwież wyświetlaną liczbę jednostek
+        const contentDiv = document.querySelector(
+          '.slot-content[data-slotid="' + data.slot_id + '"]'
+        );
+        if (contentDiv) {
+          const td = contentDiv.closest('td');
+          if (data.status === 'occupied') {
+            contentDiv.innerHTML = (data.user === currentUser)
+              ? `Zajęty przez Ciebie (${data.units} jednostek)`
+              : `Zajęty przez ${data.user} (${data.units} jednostek)<br>
+                 <a href="${baseSignupUrl + data.slot_id}">Próbuj się zapisać</a>`;
+          }
+          // Usuń pole edycyjne, jeśli było otwarte
+          const editInput = td.querySelector('input[type="number"]');
+          if (editInput) {
+            editInput.remove();
+            contentDiv.style.display = '';
+          }
+        }
+      }
+    });
+  
+    // Obsługa zaznaczania wielu checkboxów (SHIFT + klik)
+    let lastChecked = null;
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="slot_ids"]');
+    checkboxes.forEach(chk => {
+      chk.addEventListener('click', function(e) {
+        if (!lastChecked) {
+          lastChecked = this;
+          toggleHighlight(this);
+          return;
+        }
+        if (e.shiftKey) {
+          const boxes = Array.from(checkboxes);
+          let start = boxes.indexOf(lastChecked);
+          let end = boxes.indexOf(this);
+          if (start > end) [start, end] = [end, start];
+          for (let i = start; i <= end; i++) {
+            boxes[i].checked = lastChecked.checked;
+            toggleHighlight(boxes[i]);
+          }
+        } else {
+          toggleHighlight(this);
+        }
+        lastChecked = this;
+      });
+    });
+    function toggleHighlight(checkbox) {
+      const td = checkbox.closest('td');
+      if (checkbox.checked) {
+        td.classList.add('selected');
+      } else {
+        td.classList.remove('selected');
+        // Jeśli odznaczono – usuń pole input i pokaż z powrotem tekst slota
+        const existingInput = td.querySelector('input[type="number"]');
+        const contentDiv = td.querySelector('.slot-content');
+        if (existingInput) existingInput.remove();
+        if (contentDiv) contentDiv.style.display = '';
+      }
+    }
+  
+    // Kliknięcie komórki – włączenie trybu edycji
+    document.querySelectorAll('.slot-content').forEach(div => {
+      div.addEventListener('click', () => {
+        const status = div.dataset.status;
+        const slotUser = div.dataset.user;
+        if (status === 'free' || slotUser === currentUser) {
+          const td = div.closest('td');
+          const checkbox = td.querySelector('input[type="checkbox"]');
+          // Zaznacz slot, jeśli jeszcze nie zaznaczony
+          if (checkbox && !checkbox.checked) {
+            checkbox.checked = true;
+            toggleHighlight(checkbox);
+            lastChecked = checkbox;
+          }
+          // Wstaw pole input do edycji, jeśli jeszcze nie wstawiono
+          if (!td.querySelector('input[type="number"]')) {
+            const currentValue = div.dataset.units || "";
+            div.style.display = 'none';  // ukryj tekst "Wolny" lub "Zajęty..."
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '1';
+            input.value = currentValue;
+            input.classList.add('slot-input');
+            td.appendChild(input);
+          }
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>

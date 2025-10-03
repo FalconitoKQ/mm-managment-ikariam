@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-register.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Zarejestruj się</h2>
+        <!-- Zakładamy, że w widoku przekazujemy obiekt form: return render_template('register.html', form=form) -->
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            {{ form.hidden_tag() }}
+
+            <!-- TOKEN LICENCYJNY -->
+            <label for="license_token">{{ form.license_token.label.text }}</label>
+            {{ form.license_token() }}
+
+            <!-- NAZWA UŻYTKOWNIKA -->
+            <label for="username">{{ form.username.label.text }}</label>
+            {{ form.username() }}
+
+            <!-- HASŁO -->
+            <label for="password">{{ form.password.label.text }}</label>
+            {{ form.password() }}
+
+            <!-- PRZYCISK ZAREJESTRUJ SIĘ -->
+            {{ form.submit() }}
+        </form>
+    </div>
+</body>
+</html>

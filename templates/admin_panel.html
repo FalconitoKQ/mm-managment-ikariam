@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Panel Administratora</title>
+    <style>
+        /* Styl dla suwaka (przewijania) */
+        #scrollSlider {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            width: 20px;
+            height: 200px;
+            writing-mode: vertical-rl;
+        }
+        /* Styl dla komunikatów flash */
+        .flashes { list-style: none; padding: 0; }
+        .flashes li { padding: 10px; margin: 5px; border: 1px solid #ccc; }
+        /* Prosty styl tabeli */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; vertical-align: top; }
+        th { background-color: #f4f4f4; }
+        .action-form { display: inline; margin-right: 5px; }
+        .truncate { max-width: 520px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nowrap { white-space: nowrap; }
+    </style>
+</head>
+<body>
+    <!-- Wyświetlanie komunikatów flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Ustal listy statusów na podstawie enumów przekazanych do szablonu -->
+    {% if Status is defined %}
+      {% set STATUS_CHOICES = Status %}
+    {% else %}
+      {# Fallback, jeśli backend nie przekaże enuma do szablonu #}
+      {% set STATUS_CHOICES = [('OPEN','Otwarte'), ('IN_PROGRESS','W trakcie / Do realizacji'), ('CLOSED','Zakończone')] %}
+    {% endif %}
+    {% if OrderStatus is defined %}
+      {% set ORDER_STATUS_CHOICES = OrderStatus %}
+    {% else %}
+      {% set ORDER_STATUS_CHOICES = STATUS_CHOICES %}
+    {% endif %}
+
+    <h1>Panel Administratora</h1>
+    
+    <!-- Link do generowania tokena licencyjnego -->
+    <p>
+        <a href="{{ url_for('admin.generate_token') }}">Generuj nowy token licencyjny</a>
+    </p>
+
+    <!-- Formularz do ustawień (np. ukrycia bitew) -->
+    <form method="POST" action="{{ url_for('admin.admin_panel') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>
+            <input type="checkbox" name="hide_battles" {% if hide_battles %} checked {% endif %}>
+            Ukryj bitwy
+        </label>
+        <button type="submit">Zapisz ustawienia</button>
+    </form>
+
+    <h2>Lista użytkowników</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa użytkownika</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        {{ role.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ user.status_user.value }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin.grant_admin', user_id=user.id) }}" class="action-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit">Nadaj admina</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('admin.reset_password', user_id=user.id) }}" class="action-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit">Resetuj hasło</button>
+                    </form>
+                    {% if user.status_user.value == 'active' %}
+                        <form method="POST" action="{{ url_for('admin.desactive_user', user_id=user.id) }}" class="action-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit">Zablokuj</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('admin.active_user', user_id=user.id) }}" class="action-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit">Odblokuj</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="battle-management">
+        <h2>Zarządzanie Bitwami</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Bitwy</th>
+                    <th>Miasto</th>
+                    <th>Typ Bitwy</th>
+                    <th>Status</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for battle in battles %}
+                    <tr>
+                        <td class="nowrap">{{ battle.id_add_battle_db }}</td>
+                        <td>{{ battle.city_name }}</td>
+                        <td>{{ battle.battle_type }}</td>
+                        <td>
+                            <select id="battle-status-{{ battle.id_add_battle_db }}">
+                                {% for status in ['started', 'finished', 'cancelled'] %}
+                                <option value="{{ status }}" 
+                                        {% if battle.battle_status.value == status %}selected{% endif %}>
+                                    {{ status }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="updateBattleStatus({{ battle.id_add_battle_db }})">Aktualizuj status</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- NOWA SEKCJA: ZGŁOSZENIA -->
+    <div id="report-management">
+        <h2>Zarządzanie Zgłoszeniami</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Treść</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for z in zgloszenia %}
+                <tr>
+                    <td class="nowrap">{{ z.id }}</td>
+                    <td class="truncate" title="{{ z.tresc }}">{{ z.tresc }}</td>
+                    <td class="nowrap">{{ z.data.strftime('%Y-%m-%d %H:%M') if z.data }}</td>
+                    <td>
+                        <select id="zgloszenie-status-{{ z.id }}">
+                            {% for st in STATUS_CHOICES %}
+                                {% if st.value is defined %}
+                                  {% set code = st.value[0] %}
+                                  {% set label = st.value[1] %}
+                                {% else %}
+                                  {% set code = st[0] %}
+                                  {% set label = st[1] %}
+                                {% endif %}
+                                <option value="{{ code }}" {% if z.status == code %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="updateZgloszenieStatus({{ z.id }})">Aktualizuj status</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not zgloszenia %}
+                <tr><td colspan="5">Brak zgłoszeń.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="logistics-management">
+        <h2>Zarządzanie Logistyką</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Zlecenia</th>
+                    <th>Typ</th>
+                    <th>Podtyp</th>
+                    <th>Ilość</th>
+                    <th>Aktualny status</th>
+                    <th>Zmień status</th>
+                    <th>Kontrahent</th>
+                    <th>Zlecający</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="nowrap">{{ order.id_order }}</td>
+                    <td>{{ order.type_order.value }}</td>
+                    <td>{{ order.subtype_order }}</td>
+                    <td class="nowrap">{{ order.quantity }}</td>
+                    <td>
+                        {# Pokazujemy to co masz obecnie #}
+                        {{ order.status.label if order.status and order.status.label is defined else order.status }}
+                    </td>
+                    <td>
+                        <select id="order-status-{{ order.id_order }}">
+                            {% for st in ORDER_STATUS_CHOICES %}
+                                {% if st.value is defined %}
+                                  {% set code = st.value[0] %}
+                                  {% set label = st.value[1] %}
+                                {% else %}
+                                  {% set code = st[0] %}
+                                  {% set label = st[1] %}
+                                {% endif %}
+
+                                {% set is_selected = (
+                                    (order.status is defined and order.status is string and order.status == code) or
+                                    (order.status.name is defined and order.status.name == code) or
+                                    (order.status.value is defined and order.status.value == code) or
+                                    (order.status.label is defined and order.status.label == label)
+                                ) %}
+                                <option value="{{ code }}" {% if is_selected %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    <button onclick="updateOrderStatus({{ order.id_order }})">Aktualizuj</button>
+                    </td>
+                    <td>{{ order.contractor }}</td>
+                    <td>{{ order.principal or '-' }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin.admin_logistics') }}" class="action-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="order_id" value="{{ order.id_order }}">
+                            <input type="hidden" name="new_status" value="deleted">
+                            <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć to zlecenie?');">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not orders %}
+                <tr><td colspan="9">Brak zleceń.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+      // Bitwy (pozostawione jak było)
+      function updateBattleStatus(battleId) {
+          const selectEl = document.getElementById('battle-status-' + battleId);
+          if (!selectEl) return;
+          const newStatus = selectEl.value;
+          const csrfToken = "{{ csrf_token() }}";
+          fetch("/admin/battle_status/" + battleId, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                  "X-CSRFToken": csrfToken,
+                  "X-Requested-With": "XMLHttpRequest"
+              },
+              body: new URLSearchParams({ "battle_status": newStatus })
+          })
+          .then(r => r.json())
+          .then(data => alert(data.message || "Status bitwy został zaktualizowany."))
+          .catch(() => alert("Wystąpił błąd podczas aktualizacji statusu bitwy."));
+      }
+
+      // Zgłoszenia
+      function updateZgloszenieStatus(id) {
+          const sel = document.getElementById('zgloszenie-status-' + id);
+          if (!sel) return;
+          const csrfToken = "{{ csrf_token() }}";
+          // Generuj poprawny URL przez Flask zamiast wpisywać na sztywno /admin
+          const base = "{{ url_for('report.zgloszenie_status', id=0) }}"; 
+          const url = base.replace(/0$/, id);
+          fetch(url, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                  "X-CSRFToken": csrfToken,
+                  "X-Requested-With": "XMLHttpRequest"
+              },
+              body: new URLSearchParams({ "status": sel.value })
+          })
+          .then(r => r.json())
+          .then(data => alert(data.message || "Status zgłoszenia został zaktualizowany."))
+          .catch(() => alert("Błąd przy zmianie statusu zgłoszenia."));
+        }
+
+      // Zlecenia
+      function updateOrderStatus(id) {
+          const sel = document.getElementById('order-status-' + id);
+          if (!sel) return;
+          const csrfToken = "{{ csrf_token() }}";
+          fetch("/admin/order_status/" + id, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                  "X-CSRFToken": csrfToken,
+                  "X-Requested-With": "XMLHttpRequest"
+              },
+              body: new URLSearchParams({ "new_status": sel.value })
+          })
+          .then(r => r.json())
+          .then(data => alert(data.message || "Status zlecenia został zaktualizowany."))
+          .catch(() => alert("Błąd przy zmianie statusu zlecenia."));
+      }
+
+      // Aktualizacja zlecenia
+      function updateStatusZgl(id) {
+        const status = document.getElementById('zgloszenie-status-' + id).value;
+        const baseUrl = "{{ url_for('report.change_report_status', id=0) }}".replace(/0$/, id);
+        window.location.href = 'change_report_status/' + id + '/' + status;
+      }
+    </script>
+</body>
+</html>

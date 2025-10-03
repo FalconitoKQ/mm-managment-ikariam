@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Zgłoszenie błędu/uwagi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static-zgloszenie.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Zgłoszenie błędu lub uwagi</h1>
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="tresc">Opisz swój błąd lub sugestię:</label>
+            <textarea id="tresc" name="tresc" rows="5" placeholder="Wpisz treść zgłoszenia. (Pamiętaj, że wszystkie zgłoszenia są anonimowe – nie umieszczaj danych osobowych ani loginu, jeśli nie chcesz ujawniać swojej tożsamości.)"></textarea>
+            <input type="submit" value="Wyślij zgłoszenie">
+        </form>
+    </div>
+    <div>
+        <p>Próbny dla testu</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Harmonogram Slotów (Tabela Reload)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static-battle_detail.css') }}">
+    <style>
+        .table-harmonogram {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table-harmonogram th,
+        .table-harmonogram td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+        .occupied {
+            background-color: #f8d7da;
+        }
+        .available {
+            background-color: #d4edda;
+        }
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- Nawigacja po lewej -->
+    <div class="navigation-wrapper">
+        {% include 'navigation.html' %}
+    </div>
+
+    <!-- Główna sekcja strony -->
+    <div class="strona">
+        <div class="content-container">
+            <!-- Lewa kolumna (info o bitwie) -->
+            <div class="left-column">
+                {% if battle %}
+                    <h2>Informacje o bitwie</h2>
+                    <p>ID: {{ battle.id_add_battle_db }}</p>
+                    <p>Miasto: {{ battle.city_name }}</p>
+                    <p>Koordynaty: {{ battle.coordinates }}</p>
+                    <p>Przeciwnik: {{ battle.opponent_name }}</p>
+                    <p>
+                        <a href="{{ url_for('battle_detail', battle_id=battle.id_add_battle_db) }}">
+                            Powrót do szczegółów bitwy
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+
+            <!-- Prawa kolumna (tabela slotów) -->
+            <div class="right-column">
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                      <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+
+                <h1>Harmonogram Slotów (Tabela Reload)</h1>
+
+                <table class="table-harmonogram">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Czas</th>
+                            <th>Użytkownik</th>
+                            <th>Ilość jednostek</th>
+                            <th>Akcja</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for slot in slots %}
+                        <tr class="{{ 'occupied' if slot.user else 'available' }}">
+                            <td>{{ slot.date }}</td>
+                            <td>{{ slot.time }}</td>
+                            <td>{{ slot.user if slot.user else 'Wolny' }}</td>
+                            <td>{{ slot.units if slot.units else '-' }}</td>
+                            <td>
+                                <a href="{{ url_for('signup_slot', slot_id=slot.id) }}">
+                                    {% if slot.user %}
+                                        Próbuj się zapisać
+                                    {% else %}
+                                        Zapisz się
+                                    {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

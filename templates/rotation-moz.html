@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista bitew</title>
+    <link rel="stylesheet" href="/static/style-rotation-moz.css">
+</head>
+<body>
+    <!-- Wstawka do nawigacji -->
+    {% include 'navigation.html' %}
+
+    <div class="main-content">
+        <!-- Sekcja na "Wiadomości" -->
+        <div class="messages">
+            <h2>Wiadomości</h2>
+            <p>Tu znajdą się ważne informacje dotyczące bieżących wydarzeń oraz komunikaty dla użytkowników.</p>
+            <!-- Możesz dodać więcej treści lub elementów w tej sekcji według potrzeby -->
+        </div>
+
+        <h1>Rotacja moździerzy - [nazwa miasta]</h1>
+
+        <!-- Sekcja Grid -->
+        <div class="grid-container">
+            <!-- Pierwsza Tabela -->
+            <div class="grid-item">
+                <h2>Pierwsza</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>lp.</th>
+                                <th>Nazwa Miasta</th>
+                                <th>kordy</th>
+                                <th>data</th>
+                                <th>godzina</th>
+                                <th>jednostka</th>
+                                <th>ilość</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Waterloo</td>
+                                <td>50.6806, 4.4125</td>
+                                <td>18-06-1815</td>
+                                <td>11:30</td>
+                                <td>Pierwsza Dywizja</td>
+                                <td>3000</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Gettysburg</td>
+                                <td>39.8308, -77.2311</td>
+                                <td>01-07-1863</td>
+                                <td>14:00</td>
+                                <td>Trzecia Dywizja</td>
+                                <td>5000</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Marne</td>
+                                <td>49.0, 3.5</td>
+                                <td>05-09-1914</td>
+                                <td>12:00</td>
+                                <td>Piąta Dywizja</td>
+                                <td>7000</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Somma</td>
+                                <td>50.0, 2.5</td>
+                                <td>01-07-1916</td>
+                                <td>07:30</td>
+                                <td>Trzecia Dywizja</td>
+                                <td>6000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Druga Tabela -->
+            <div class="grid-item">
+                <h2>Druga</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>lp.</th>
+                                <th>Miejsce bitwy</th>
+                                <th>kordy</th>
+                                <th>data</th>
+                                <th>godzina</th>
+                                <th>jednostka</th>
+                                <th>ilość</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Normandia</td>
+                                <td>49.4144, -0.7931</td>
+                                <td>06-06-1944</td>
+                                <td>06:30</td>
+                                <td>Piąta Dywizja</td>
+                                <td>10000</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Stalingrad</td>
+                                <td>48.708, 44.514</td>
+                                <td>23-08-1942</td>
+                                <td>04:00</td>
+                                <td>Druga Dywizja</td>
+                                <td>15000</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>El Alamein</td>
+                                <td>30.8, 28.95</td>
+                                <td>23-10-1942</td>
+                                <td>21:00</td>
+                                <td>Pierwsza Dywizja</td>
+                                <td>8000</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Midway</td>
+                                <td>28.2, -177.4</td>
+                                <td>04-06-1942</td>
+                                <td>04:30</td>
+                                <td>Czwarta Dywizja</td>
+                                <td>9000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

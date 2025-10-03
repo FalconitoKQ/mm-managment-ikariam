@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zapisz się na slot {{ slot.time }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static-battle_detail.css') }}">
+    <style>
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .main-container {
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Nawigacja po lewej -->
+    <div class="navigation-wrapper">
+        {% include 'navigation.html' %}
+    </div>
+
+    <!-- Główna sekcja strony -->
+    <div class="strona">
+        <div class="content-container">
+            <!-- Lewa kolumna (opcjonalnie pusta) -->
+            <div class="left-column">
+            </div>
+
+            <!-- Prawa kolumna (formularz) -->
+            <div class="right-column">
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                      <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+
+                <h1>Zapisz się na slot: {{ slot.date }} {{ slot.time }}</h1>
+
+                <form method="post" style="margin-top: 20px;">
+                    <!-- Dodanie tokena CSRF -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <label for="username">Twoje imię (login):</label><br>
+                    <input type="text" name="username" id="username"
+                           required
+                           value="{{ username }}"
+                           readonly><br><br>
+
+                    <label for="units">Ilość jednostek:</label><br>
+                    <input type="number" name="units" id="units" min="1" required><br><br>
+
+                    <button type="submit">Zapisz się</button>
+                </form>
+
+                <p style="margin-top: 20px;">
+                    <a href="{{ url_for('battle.battle_detail', battle_id=slot.battle_id) }}">
+                        Powrót do szczegółów bitwy
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

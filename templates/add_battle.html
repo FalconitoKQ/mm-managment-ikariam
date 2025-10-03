@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/static-add_battle.css">
+    <title>Dodaj Szczegóły Bitwy</title>
+</head>
+<body>
+    <div class="battle-form">
+        <h2>Dodaj szczegóły bitwy</h2>
+        <form action="{{ url_for('battle.add_battle') }}" method="post">
+            <!-- Dodany token CSRF -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <!-- Pole do wprowadzenia nazwy miasta -->
+            <div class="form-group">
+                <label for="city">Nazwa miasta:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+
+            <!-- Pole do wprowadzenia kordów -->
+            <div class="form-group">
+                <label for="coordinates">Kordy (np. 123.45, 67.89):</label>
+                <input type="text" id="coordinates" name="coordinates" required pattern="^[-+]?\d{1,3}\.\d{1,6},\s?[-+]?\d{1,3}\.\d{1,6}$">
+                <small>Format: 123.45, 67.89</small>
+            </div>
+
+            <!-- Wybór rodzaju bitwy -->
+            <div class="form-group">
+                <label for="battle_type">Rodzaj bitwy:</label>
+                <select id="battle_type" name="battle_type" required>
+                    <option value="morska">Bitwa morska</option>
+                    <option value="lądowa">Bitwa lądowa</option>
+                </select>
+            </div>
+
+            <!-- Pole do wpisania nazwy przeciwnika -->
+            <div class="form-group">
+                <label for="opponent_name">Nazwa przeciwnika:</label>
+                <input type="text" id="opponent_name" name="opponent_name" required>
+            </div>
+
+            <!-- Pole do wpisania nazwy przeciwnego sojuszu -->
+            <div class="form-group">
+                <label for="opponent_alliance">Nazwa przeciwnego sojuszu:</label>
+                <input type="text" id="opponent_alliance" name="opponent_alliance" required>
+            </div>
+
+            <div class ="form-group">
+                <!-- Pole do wpisania opisu bitwy -->
+                <label for ="description">Opis/Komentarz do bitwy</label>
+                <textarea id="comments" name="comments" rows="10" required class="form-control"></textarea>
+            </div>
+
+            <!-- Przycisk do przesyłania formularza -->
+            <div class="form-group">
+                <button type="submit" class="add-battle-btn">Utwórz nową bitwę</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

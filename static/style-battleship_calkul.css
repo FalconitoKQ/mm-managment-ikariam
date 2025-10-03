@@ -1,0 +1,275 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth;
+}
+
+/* Container Style */
+.container {
+    display: flex;
+}
+
+/* Navigation Wrapper Styles */
+.navigation-wrapper {
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+.navigation-wrapper nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navigation-wrapper nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigation-wrapper nav ul li {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.navigation-wrapper nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    background-color: #444;
+    border-radius: 4px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.navigation-wrapper nav ul li a:hover {
+    background-color: #575757;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    flex: 1;
+}
+
+.main-content h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Clock Section */
+#czas {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#czas h2 {
+    font-size: 22px;
+    color: #333;
+}
+
+#aktualna-godzina {
+    font-size: 20px;
+    color: #666;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+input[type="number"] {
+    padding: 10px;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 80%;
+    max-width: 150px;
+}
+
+/* Adjust column width */
+td.ilosc, th.ilosc {
+    width: 175px;
+}
+
+/* Button Styles */
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+button:active {
+    background-color: #449d44;
+}
+
+/* Updated Data Table */
+.updated-data {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-left: 20px;
+    flex: 1;
+}
+
+.updated-data table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.updated-data th, .updated-data td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.updated-data th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.updated-data tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navigation-wrapper {
+        width: 250px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+    }
+
+    table, th, td {
+        font-size: 14px;
+    }
+
+    .updated-data {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .navigation-wrapper {
+        width: 180px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+    }
+
+    table, th, td {
+        font-size: 12px;
+    }
+
+    input[type="number"] {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+
+
+
+
+/* Table Styles */
+table {
+    width: 100%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Responsive Styles for Table */
+@media (max-width: 768px) {
+    table, th, td {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    table, th, td {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}

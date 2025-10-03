@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jednostki w bitwie</title>
+    <link rel="stylesheet" href="../static/style-battleship_calkul.css">
+    <style>
+        .scrollable-table {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+        }
+        .scrollable-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .scrollable-table th,
+        .scrollable-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .scrollable-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2;
+            z-index: 1;
+        }
+        .add-battle-btn {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .add-battle-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation-wrapper">
+            {% include 'navigation.html' %}
+        </div>
+        <div class="main-content">
+            <h1>Informacje o bitwie</h1>
+            <div class="tables-wrapper" style="display: flex;">
+                <div class="updated-data">
+                    <h2>Zaktualizowane dane</h2>
+                    <div class="scrollable-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID BBS</th>
+                                    <th>Miasto</th>
+                                    <th>Koordynaty</th>
+                                    <th>Taran Parowy</th>
+                                    <th>Okręt z Taranem</th>
+                                    <th>Krążownik</th>
+                                    <th>Balonowiec</th>
+                                    <th>Rundy (Taran Parowy)</th>
+                                    <th>Godzina (Taran Parowy)</th>
+                                    <th>Rundy (Okręt)</th>
+                                    <th>Godzina (Okręt)</th>
+                                    <th>Rundy (Krążownik)</th>
+                                    <th>Godzina (Krążownik)</th>
+                                    <th>Rundy (Balonowiec)</th>
+                                    <th>Godzina (Balonowiec)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for battle in battleships %}
+                                <tr>
+                                    <td>{{ battle.id_bbs }}</td>
+                                    <td>{{ battle.battle.city_name if battle.battle else '' }}</td>
+                                    <td>{{ battle.battle.coordinates if battle.battle else '' }}</td>
+                                    <td>{{ battle.stock_taran_parowy }}</td>
+                                    <td>{{ battle.stock_okret_z_taranem }}</td>
+                                    <td>{{ battle.stock_krazownik }}</td>
+                                    <td>{{ battle.stock_balonowiec }}</td>
+                                    <td>{{ battle.number_of_rounds_for_taran_parowy }}</td>
+                                    <td>{{ battle.time_round_for_taran_parowy }}</td>
+                                    <td>{{ battle.number_of_rounds_for_okret_z_taranem }}</td>
+                                    <td>{{ battle.time_round_for_okret_z_taranem }}</td>
+                                    <td>{{ battle.number_of_rounds_for_krazownik }}</td>
+                                    <td>{{ battle.time_round_for_krazownik }}</td>
+                                    <td>{{ battle.number_of_rounds_for_balonowiec }}</td>
+                                    <td>{{ battle.time_round_for_balonowiec }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <form action="{{ url_for('add_battle') }}" method="get">
+                <button type="submit" class="add-battle-btn">Dodaj bitwę</button>
+            </form>
+            <h3>Ostatnie aktualizacje</h3>
+            <p>Krótki opis dotyczący ostatnich aktualizacji.</p>
+            <button onclick="location.href='ostatnie_aktualizacje.html'">Przejdź do ostatnich aktualizacji</button>
+        </div>
+    </div>
+    <script>
+        async function fetchBattleships() {
+            try {
+                const response = await fetch('/ads');
+                const data = await response.json();
+                const tableBody = document.getElementById('updated-data-table-body');
+                if (tableBody) {
+                    tableBody.innerHTML = '';
+                    data.battleships.forEach(battleship => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${battleship.id}</td>
+                            <td>${battleship.city_name || ''}</td>
+                            <td>${battleship.coordinates || ''}</td>
+                            <td>${battleship.stock_taran_parowy}</td>
+                            <td>${battleship.stock_okret_z_taranem}</td>
+                            <td>${battleship.stock_krazownik}</td>
+                            <td>${battleship.stock_balonowiec}</td>
+                            <td>${battleship.number_of_rounds_for_taran_parowy}</td>
+                            <td>${battleship.time_round_for_taran_parowy}</td>
+                            <td>${battleship.number_of_rounds_for_okret_z_taranem}</td>
+                            <td>${battleship.time_round_for_okret_z_taranem}</td>
+                            <td>${battleship.number_of_rounds_for_krazownik}</td>
+                            <td>${battleship.time_round_for_krazownik}</td>
+                            <td>${battleship.number_of_rounds_for_balonowiec}</td>
+                            <td>${battleship.time_round_for_balonowiec}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching battleships:', error);
+            }
+        }
+    </script>
+</body>
+</html>

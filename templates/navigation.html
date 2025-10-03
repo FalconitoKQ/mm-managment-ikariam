@@ -1,0 +1,106 @@
+<div class="navigation-wrapper">
+    <nav>
+        <div id="current-date-time" class="date-time"></div>
+        <ul>
+            <li>
+                <a href="{{ url_for('admin.admin_panel') }}">Panel Administracyjny</a>
+            </li>
+            <li>
+                <a href="{{ url_for('battle.index') }}">Dane główne</a>
+            </li>
+            <li>
+                <a href="{{ url_for('battle.index') }}">Ostatnie aktualizacje</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" id="toggle-bitwy">
+                    Bitwy <b class="caret"></b>
+                </a>
+                <ul id="bitwy-list" class="bitwy-catalog">
+                    {% for battle in battles %}
+                    <li>
+                        <a href="{{ url_for('battle.battle_detail', battle_id=battle.id_add_battle_db) }}">
+                            {{ battle.city_name }} - {{ battle.opponent_name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>
+                <a href="{{ url_for('battle.battles_list') }}">Kalkulator Bitwy</a>
+            </li>
+            <li>
+                <a href="{{ url_for('logistics.logistics_index') }}">Logistyka</a>
+            </li>
+            <li>
+                <a href="{{ url_for('report.submit_report') }}">Zgłoś</a>
+            </li>
+            <li>
+                <a href="{{ url_for('auth.logout') }}" class="logout-button">Wyloguj</a>
+            </li>
+        </ul>
+        <input type="range" id="sidebar-slider" class="sidebar-slider" min="0" max="100" value="0">
+    </nav>
+</div>
+<div>
+    {% include 'flash_toasts.html' %}
+</div>
+
+<style>
+    /* Styl listy */
+    .bitwy-catalog {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+    .bitwy-catalog li {
+        padding: 8px 10px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .bitwy-catalog li:last-child {
+        border-bottom: none;
+    }
+    .bitwy-catalog.open {
+        max-height: 500px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggleBitwy = document.getElementById("toggle-bitwy");
+        var bitwyList = document.getElementById("bitwy-list");
+
+        toggleBitwy.addEventListener("click", function() {
+            bitwyList.classList.toggle("open");
+        });
+    });
+</script>
+<script>
+    // Funkcja do aktualizacji daty i godziny
+    function updateDateTime() {
+        const now = new Date();
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        document.getElementById('current-date-time').textContent = now.toLocaleString('pl-PL', options);
+    }
+
+    // Aktualizuj datę i godzinę co sekundę
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+</script>
+<script>
+    // Funkcja do synchronizacji suwaka z przewijaniem
+    const scrollSlider = document.getElementById('scrollSlider');
+    const scrollableTable = document.querySelector('.scrollable-table');
+
+    scrollSlider.addEventListener('input', function() {
+        const scrollTop = (scrollSlider.value / 100) * (scrollableTable.scrollHeight - scrollableTable.clientHeight);
+        scrollableTable.scrollTop = scrollTop;
+    });
+
+    scrollableTable.addEventListener('scroll', function() {
+        const scrollTop = (scrollableTable.scrollTop / (scrollableTable.scrollHeight - scrollableTable.clientHeight)) * 100;
+        scrollSlider.value = scrollTop;
+    });
+</script>

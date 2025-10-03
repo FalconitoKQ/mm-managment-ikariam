@@ -1,0 +1,153 @@
+/* =========================================
+   Battles List — CSS (fits battles_list.html)
+   Unified with battle_detail.css
+========================================= */
+:root{
+  --bg:#f4f4f4; --text:#333; --muted:#777;
+  --nav-bg:#333; --nav-item:#444; --nav-hover:#575757; --nav-border:#2b2b2b;
+  --card:#fff; --border:#ddd; --table-stripe:#f9f9f9;
+  --btn:#5cb85c; --btn-hover:#4cae4c; --btn-active:#449d44;
+  --focus:#2684ff;
+}
+
+*{ box-sizing:border-box }
+html, body{
+  margin:0; padding:0;
+  font-family:Arial, Helvetica, sans-serif;
+  line-height:1.6;
+  background:var(--bg); color:var(--text);
+  scroll-behavior:smooth;
+}
+:focus-visible{ outline:3px solid var(--focus); outline-offset:2px }
+
+/* =========================================
+   Fixed left Navigation (shared look)
+   width: 250px (like battle_detail.css)
+========================================= */
+.navigation-wrapper{
+  position:fixed; top:0; left:0;
+  width:250px; height:100vh;
+  background:var(--nav-bg);
+  z-index:1000;
+  padding:20px 0;
+  border-right:1px solid var(--nav-border);
+  overflow-y:auto;
+  box-shadow:2px 0 5px rgba(0,0,0,.2);
+}
+.navigation-wrapper ul{
+  list-style:none; margin:0; padding:0; text-align:center;
+}
+.navigation-wrapper li{ margin:10px 0 }
+.navigation-wrapper a{
+  display:block; text-decoration:none; color:#fff;
+  background:var(--nav-item);
+  padding:15px; margin:0 16px; border-radius:6px;
+  transition:background .2s ease, transform .06s ease;
+}
+.navigation-wrapper a:hover{ background:var(--nav-hover) }
+.navigation-wrapper a:active{ transform:translateY(1px) }
+
+/* =========================================
+   Main content (offset = 280px)
+========================================= */
+.main-content{
+  margin-left:280px;
+  padding:20px;
+  min-height:100vh;
+}
+.main-content h1{
+  margin:0 0 20px;
+  font-size:28px;
+  color:var(--text);
+}
+
+/* =========================================
+   Add battle button
+========================================= */
+.add-battle-button{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--btn); color:#fff;
+  padding:10px 20px; border:0; border-radius:8px;
+  font-size:16px; cursor:pointer;
+  transition:background .2s, transform .06s, box-shadow .2s;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+  margin-bottom:20px;
+}
+.add-battle-button:hover{ background:var(--btn-hover) }
+.add-battle-button:active{ background:var(--btn-active); transform:translateY(1px) }
+.add-battle-button:focus-visible{ box-shadow:0 0 0 3px rgba(38,132,255,.35) }
+
+/* =========================================
+   Table (with responsive wrapper + sticky head)
+========================================= */
+.table-responsive{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch }
+
+table{
+  width:100%; max-width:1200px;
+  border-collapse:collapse;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+
+thead th{
+  position:sticky; top:0; z-index:1;
+  background:#444; color:#fff; font-weight:700;
+}
+
+th, td{
+  border:1px solid var(--border);
+  padding:12px; text-align:left; vertical-align:middle;
+  white-space:nowrap; /* keeps cells compact; remove if you want wrapping everywhere */
+}
+tr:nth-child(even){ background:var(--table-stripe) }
+
+/* “Zobacz” link */
+table a{
+  color:#0b66c3; text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:border-color .2s ease;
+}
+table a:hover{ border-color:#0b66c3 }
+
+/* Allow wrapping on potentially long cols at smaller widths */
+@media (max-width: 900px){
+  td:nth-child(3), /* Koordynaty */
+  td:nth-child(5){ /* Nazwa przeciwnika */
+    white-space:normal; word-break:break-word;
+  }
+}
+
+/* =========================================
+   Scrollbar cosmetics (sidebar)
+========================================= */
+.navigation-wrapper::-webkit-scrollbar{ width:10px }
+.navigation-wrapper::-webkit-scrollbar-thumb{
+  background:#2c2c2c; border:2px solid #1f1f1f; border-radius:999px
+}
+.navigation-wrapper::-webkit-scrollbar-thumb:hover{ background:#3a3a3a }
+
+/* =========================================
+   Responsive
+========================================= */
+@media (max-width: 1024px){
+  .navigation-wrapper{ width:230px }
+  .main-content{ margin-left:250px }
+}
+@media (max-width: 768px){
+  .navigation-wrapper{ width:210px }
+  .main-content{ margin-left:230px }
+  table, th, td{ font-size:14px; padding:10px }
+  .add-battle-button{ padding:9px 16px; font-size:15px }
+}
+@media (max-width: 480px){
+  .navigation-wrapper{ width:190px }
+  .main-content{ margin-left:210px }
+  table, th, td{ font-size:12px; padding:8px }
+  .add-battle-button{ padding:8px 14px; font-size:14px }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important }
+}

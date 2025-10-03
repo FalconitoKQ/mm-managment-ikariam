@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Administratora - Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { margin-top: 40px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .section { margin-bottom: 60px; }
+    </style>
+</head>
+<body>
+
+    <h1>Panel Administratora</h1>
+
+    <div class="section">
+        <h2>Użytkownicy</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Nazwa</th><th>Status</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.status_user.value }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            {{ role.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Bitwy</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Miasto</th><th>Koordynaty</th><th>Typ</th><th>Przeciwnik</th><th>Data</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for battle in battles %}
+                <tr>
+                    <td>{{ battle.id_add_battle_db }}</td>
+                    <td>{{ battle.city_name }}</td>
+                    <td>{{ battle.coordinates }}</td>
+                    <td>{{ battle.battle_type }}</td>
+                    <td>{{ battle.opponent_name }}</td>
+                    <td>{{ battle.battle_date }}</td>
+                    <td>{{ battle.battle_status.value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Zasoby statków (BBS)</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Bitwa</th><th>Taran</th><th>Okręt</th><th>Krążownik</th><th>Balonowiec</th></tr>
+            </thead>
+            <tbody>
+                {% for bbs in bbs_entries %}
+                <tr>
+                    <td>{{ bbs.id_bbs }}</td>
+                    <td>{{ bbs.id_battle }}</td>
+                    <td>{{ bbs.stock_taran_parowy }}</td>
+                    <td>{{ bbs.stock_okret_z_taranem }}</td>
+                    <td>{{ bbs.stock_krazownik }}</td>
+                    <td>{{ bbs.stock_balonowiec }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Tokeny licencji</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Token</th><th>Utworzono</th><th>Wygasa</th><th>Użyty</th></tr>
+            </thead>
+            <tbody>
+                {% for token in license_tokens %}
+                <tr>
+                    <td>{{ token.id }}</td>
+                    <td>{{ token.token }}</td>
+                    <td>{{ token.created_at }}</td>
+                    <td>{{ token.expires_at }}</td>
+                    <td>{{ 'Tak' if token.used else 'Nie' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Sloty</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Data</th><th>Godzina</th><th>Użytkownik</th><th>Jednostki</th><th>Bitwa</th></tr>
+            </thead>
+            <tbody>
+                {% for slot in slots %}
+                <tr>
+                    <td>{{ slot.id }}</td>
+                    <td>{{ slot.date }}</td>
+                    <td>{{ slot.time }}</td>
+                    <td>{{ slot.user }}</td>
+                    <td>{{ slot.units }}</td>
+                    <td>{{ slot.battle_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Zgłoszenia</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Treść</th><th>Data</th><th>ID użytkownika</th></tr>
+            </thead>
+            <tbody>
+                {% for zgl in zgloszenia %}
+                <tr>
+                    <td>{{ zgl.id }}</td>
+                    <td>{{ zgl.tresc }}</td>
+                    <td>{{ zgl.data }}</td>
+                    <td>{{ zgl.user_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

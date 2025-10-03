@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-identificat.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie</title>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Zaloguj się</h2>
+        <!-- Upewnij się, że "form" to ten sam obiekt przekazany z widoku auth_routes.py -->
+        <form id="loginForm" method="POST" action="{{ url_for('auth.login') }}">
+            
+            <!-- Token CSRF – Flask-WTF wygeneruje ukryte pole -->
+            {{ form.hidden_tag() }}
+
+            <!-- Etykieta i pole dla nazwy użytkownika -->
+            <label for="username">{{ form.username.label.text }}</label>
+            {{ form.username() }}
+            
+            <!-- Etykieta i pole hasła -->
+            <label for="password">{{ form.password.label.text }}</label>
+            {{ form.password() }}
+
+            <!-- Przycisk wysyłania -->
+            {{ form.submit() }}
+        </form>
+
+        <div id="errorBubble" class="error-bubble" style="display: none;">
+            <h2 id="errorMessage"></h2>
+        </div>
+        <p>Nie masz konta? <a href="/rejestracja">Zarejestruj się</a></p>
+    </div>
+</body>
+</html>

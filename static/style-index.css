@@ -1,0 +1,159 @@
+/* Globalne style */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth;
+}
+
+/* Kontener główny */
+.container {
+    display: flex;
+}
+
+/* Pasek nawigacji */
+.navigation-wrapper {
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+.navigation-wrapper nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navigation-wrapper nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navigation-wrapper nav ul li {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.navigation-wrapper nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    background-color: #444;
+    border-radius: 4px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.navigation-wrapper nav ul li a:hover {
+    background-color: #575757;
+}
+
+/* Główna zawartość */
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    flex: 1;
+}
+
+.main-content h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Kontener responsywnej tabeli */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Style tabeli */
+table {
+    width: 100%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Style przycisków */
+.buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.buttons button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.buttons button:hover {
+    background-color: #4cae4c;
+}
+
+.buttons button:active {
+    background-color: #449d44;
+}
+
+/* Style responsywne */
+@media (max-width: 768px) {
+    .navigation-wrapper {
+        width: 250px;
+    }
+    .main-content {
+        margin-left: 220px;
+    }
+    table, th, td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navigation-wrapper {
+        width: 180px;
+    }
+    .main-content {
+        margin-left: 200px;
+    }
+    table, th, td {
+        font-size: 12px;
+        padding: 8px;
+    }
+    .buttons button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

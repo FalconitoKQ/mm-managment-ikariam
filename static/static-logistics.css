@@ -1,0 +1,172 @@
+/* style-logistics.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 2rem;
+    padding: 0;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth;
+}
+
+/* Headings and Text */
+h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+p {
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Details / Dodaj zlecenie */
+details {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+details > summary {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Formularz i tabela */
+.orders table,
+details table {
+  width: 100%;
+  max-width: none;    /* usuń limit szerokości */
+}
+
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+}
+th {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Inputy i selektory */
+select,
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+/* Przyciski */
+button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #2d89ef;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #1b5fbd;
+}
+
+/* Instrukcja obsługi */
+.instruction {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+.instruction h2 {
+    color: #333;
+    margin-top: 0;
+}
+.instruction ol,
+.instruction ul {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+.instruction li {
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    body {
+        margin: 1rem;
+    }
+    details,
+    .instruction {
+        padding: 0.75rem;
+    }
+    select,
+    input[type="number"],
+    button {
+        font-size: 0.9rem;
+    }
+    table, th, td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        margin: 0.5rem;
+    }
+    details,
+    .instruction {
+        padding: 0.5rem;
+    }
+    select,
+    input[type="number"],
+    button {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+    table, th, td {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+}
+
+
+/* kontener przewijania */
+.scrollable-table {
+  max-height: 50vh;    /* albo dowolna wartość */
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;  /* musi być rodzicem dla sticky */
+}
+
+/* tabelka */
+.scrollable-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* przyklejamy nagłówki */
+.scrollable-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;          /* żeby przykryły komórki pod spodem */
+  /* dodatkowo możesz dorzucić obramowanie dolne dla wyraźnej linii: */
+  border-bottom: 2px solid #343a40;
+}

@@ -1,0 +1,246 @@
+/* Podstawowe style dla całej strony */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth;
+}
+
+/* Nawigacja po lewej stronie */
+.navigation-wrapper {
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
+    z-index: 1000;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Listy i linki w nawigacji */
+.navigation-wrapper ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.navigation-wrapper ul li {
+    margin: 10px 0;
+}
+
+.navigation-wrapper ul li a {
+    display: block;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    background-color: #444;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation-wrapper ul li a:hover {
+    background-color: #575757;
+}
+
+/* Główna zawartość strony */
+.strona {
+    margin-left: 280px;
+    padding: 20px;
+}
+
+/* Sekcje na stronie */
+.strona section {
+    margin-bottom: 30px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabele */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Alternatywne kolory dla wierszy */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Harmonogram slotów */
+.table-harmonogram th,
+.table-harmonogram td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Sloty - kolorowanie zajętych i wolnych */
+.occupied {
+    background-color: #f8d7da; /* czerwony */
+}
+
+.available {
+    background-color: #d4edda; /* zielony */
+}
+
+/* Poprawiona obsługa checkboxów w harmonogramie */
+.slot-checkbox input[type="checkbox"] {
+    transform: scale(1.5); /* Powiększenie checkboxa */
+    margin: 5px;
+    cursor: pointer;
+}
+
+/* Podświetlanie zaznaczonych komórek slotów */
+.selected {
+    background-color: #ffeb99 !important;  /* jasnożółte tło */
+    border: 2px solid #f39c12 !important;  /* pomarańczowa obwódka */
+}
+
+/* Styl pola input do edycji jednostek w komórce */
+.slot-input {
+    width: 60px;
+    padding: 5px;
+    font-size: 14px;
+    /* opcjonalnie: border, margin itp. aby pasowało do komórki */
+}
+
+/* Wiadomości flash */
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.flashes li.success {
+    color: green;
+}
+
+.flashes li.error {
+    color: red;
+}
+
+/* Pola input */
+input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100px;
+}
+
+/* Przyciski */
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+button:active {
+    background-color: #449d44;
+}
+
+/* Grupowanie pól formularza */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Kontener z harmonogramem slotów */
+.scrollable-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+/* Responsywność - tablety */
+@media (max-width: 768px) {
+    .navigation-wrapper {
+        width: 200px;
+    }
+    
+    .strona {
+        margin-left: 220px;
+    }
+    
+    table, th, td {
+        font-size: 14px;
+    }
+}
+
+/* Responsywność - telefony */
+@media (max-width: 480px) {
+    .navigation-wrapper {
+        width: 180px;
+    }
+    
+    .strona {
+        margin-left: 200px;
+    }
+    
+    table, th, td {
+        font-size: 12px;
+    }
+    
+    input[type="number"] {
+        font-size: 14px;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+.scrollable-table {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #ccc
+}
+
+.scrollable-table table {
+    min-width: 1200px; /* Minimalna szerokość tabeli */
+    border-collapse: collapse;
+}
+
+.scrollable-table th, .scrollable-table td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}

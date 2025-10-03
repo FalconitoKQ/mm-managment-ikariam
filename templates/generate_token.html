@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generowanie tokena licencyjnego</title>
+</head>
+<body>
+    <h1>Generowanie tokena licencyjnego</h1>
+    <form method="post">
+        <!-- Dodany token CSRF -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Generuj token</button>
+    </form>
+    <a href="{{ url_for('admin.admin_panel') }}">Powrót do panelu administracyjnego</a>
+</body>
+</html>

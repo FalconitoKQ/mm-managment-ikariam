@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistyka</title>
+    <!-- Główne style globalne -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-index.css') }}">
+    <!-- Style dla podstrony logistyki -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='static-logistics.css') }}">
+    <style>
+        .scrollable-table {
+            max-height: 50vh;
+            /* max-width: 70vw; */
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+        .navigation-wrapper {
+            overflow-y: auto;
+        }
+        .container {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% include 'navigation.html' %}
+        <main class="main-content">
+            <h1>Logistyka</h1>
+            <p>Zarządzanie zleceniami w sojuszu</p>
+
+            <details>
+                <summary>Dodaj zlecenie</summary>
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Typ</th>
+                                    <th>Podtyp</th>
+                                    <th>Rodzaj oferty</th>  <!-- Dodana kolumna nagłówka -->
+                                    <th>Preferowany czas</th>
+                                    <th>Ilość</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <!-- Ukryte pole z datą utworzenia zlecenia -->
+                                        <input type="hidden" name="creation_time" value="{{ now.strftime('%Y-%m-%d %H:%M:%S') }}">
+                                        {{ now.strftime('%Y-%m-%d %H:%M:%S') }}
+                                    </td>
+                                    <td>
+                                        <!-- Istniejące pole wyboru typu zlecenia -->
+                                        <select id="type_order" name="type_order" required>
+                                            <option value="" disabled selected>— wybierz typ —</option>
+                                            <!-- ...opcje typu ładowane dynamicznie... -->
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <!-- Istniejące pole wyboru podtypu zlecenia -->
+                                        <select id="subtype_order" name="subtype_order" disabled required>
+                                            <option value="" disabled selected>— najpierw typ —</option>
+                                            <!-- ...opcje podtypu ładowane dynamicznie po wyborze typu... -->
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <!-- Nowe pole wyboru rodzaju oferty -->
+                                        <select id="offert" name="offert">
+                                            <option value="" disabled selected>— wybierz ofertę —</option>
+                                            <option value="Needs">Potrzebuje</option>
+                                            <option value="Offers">Oferuje</option>
+                                            <option value="Requests">Prośby</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input
+                                          type="datetime-local"
+                                          id="preferred_time"
+                                          name="preferred_time"
+                                          class="form-control"
+                                        >
+                                    </td>
+                                    <td>
+                                        <!-- Istniejące pole wpisania ilości -->
+                                        <input type="number" name="quantity" min="1" required>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit">Dodaj zlecenie</button>
+                </form>
+            </details>
+
+            {% if add_orders %}
+            <div class="orders">
+                <h3>Lista zleceń</h3>
+                <div class="scrollable-table table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th> <!-- 1 -->
+                                <th>Typ</th> <!-- 2 -->
+                                <th>Podtyp</th> <!-- 3 -->
+                                <th>Ilość</th> <!-- 4 -->
+                                <th>Status</th> <!-- 5 -->
+                                <th>Rodzaj oferty</th> <!-- 6 -->
+                                <th>Preferowany czas zakończenia</th>
+                                <th>Zleceniodawca</th> <!-- 7 -->
+                                <th>Zleceniobiorca</th> <!-- 8 -->
+                                <th>Data utworzenia</th> <!-- 9 -->
+                                <th>Akcje</th> <!-- 10 -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for o in add_orders %}
+                            <tr>
+                                <td>{{ o.id_order }}</td> <!-- 1 -->
+                                <td>{{ o.type_order.label }}</td> <!-- 2 -->
+                                <td>{{ o.subtype_order_label or '—' }}</td> <!-- 3 -->
+                                <td>{{ o.quantity }}</td> <!-- 4 -->
+                                <td>{{ o.status.label }}</td> <!-- 5 -->
+                                <td>{{ o.offert }}</td> <!-- 6 -->
+                                <td>{{ o.preferred_time.strftime('%Y-%m-%d %H:%M') if o.preferred_time else '—' }}</td> <!-- Preferowany czas zakończenia -->
+                                <td>{{ o.contractor }}</td> <!-- 7 -->
+                                <td>{{ o.principal }}</td> <!-- 8 -->
+                                <td>{{ o.time_create.strftime('%Y-%m-%d %H:%M:%S') }}</td> <!-- 9 -->
+                                <td>
+                                    <form action="{{ url_for('logistics.complete_order', order_id=o.id_order) }}" method="POST" style="display:inline;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit">Przyjmij zlecenie</button>
+                                    </form>
+                                    <button onclick="window.location.href='{{ url_for('logistics.edit_order', order_id=o.id_order) }}'">Edytuj</button>
+                                    <form action="{{ url_for('logistics.delete_order', order_id=o.id_order) }}" method="POST" style="display:inline;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit">Usuń</button>
+                                    </form>
+                                </td> <!-- 10 -->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="instruction">
+                <h2>Instrukcja obsługi</h2>
+                <ol>
+                    <li>Dodawanie zlecenia</li>
+                      <ul>
+                        <li>Możesz dodać zlecenie, wybierając typ i podtyp, ilość dobra, oraz zleceniodawcę</li>
+                        <li>Po dodaniu zlecenia, jego status jest "Aktywne"</li>
+                        <li>Jeśli nie wybierzesz typu lub podtypu, nie będziesz mógł dodać zlecenia - wszystkie pola formularza muszą być uzupełnione</li>
+                      </ul>
+                    </ol>
+                    <ol>
+                        <li>Przyjmowanie zlecenia</li>
+                        <ul>
+                            <li>Przyjmować zlecenie możemy tylko te które mają status "aktywna"</li>
+                            <li>Przyjmujemy zlecenie klikając przycisk "Przyjmij zlecenie"</li>
+                            <li>Po przyjęciu zlecenia jego status zmienia się na "Zakończona"</li>
+                            <li>Po przyjeciu zlecenia zleceniobiorca jest zobowiązany zrealizować zamówienie</li>
+                        </ul>
+                    </ol>
+                
+                    <ol>
+                      <li>Edycja zlecenia</li>
+                        <ul>
+                            <li>Możesz zmienić ilość dobra na które masz zapotrzebowanie, wartość ta musi być większa od 0 (ilość zamówienia > 0)</li>
+                            <li>Możesz zmienić status swoje zlecenia na "nieaktywny", ale wówczas zlecenie jest zdezaktywowane</li>
+                            <li>Jeśli zlecenie ma status:</li>
+                            <ol>
+                                <li>"Aktywne" - możesz je edytować, oraz zamówienie jest Aktywne</li>
+                                <li>"Zakończone" - Nie możesz edytować, oraz nie możesz przyjąć go inny użytkownik</li>
+                                <li>"Nieaktywne" - Nie możesz edytować, oraz nie możesz zmienić statusu na "Aktywne"</li>
+                                <li>"Usunięte" - Moderator usunął zlecenie, nie możesz edytować, ani nikt nie może go przyjąć</li>
+                                </li>
+                            </ol>
+                            </ul>
+                            </li>
+                        </ol>
+                        <ol>
+                        <li>Usuwanie zlecenia</li>
+                            <ul>
+                            <li>Zlecenia nie możesz usunąć sam z siebie, ale możesz je zdezaktywować w edycji wybierając status: nieaktywny</li>
+                            </ul>
+                        </ol>
+                        <ol>
+                            <li>Przyszłe plany rozwojowe:</li>
+                            <ul>
+                                <li>Teraz jest możliwość dodawnia zleceń jako użytkownicy którzy potrzebują, w przyszłości będzie możliwość dodawnia zleceń jako użytkownicy którzy mogą zaoferować dane dobro</li>
+                                <li>Jeśli ten system nie wypali to wtedy można zrobić statusy, że ktoś przyjmuje zlecenie, a zleceniodawca musi potwierdzić skompletowania zamówienia</li>
+                            </ol>
+            </div>
+
+            <!-- Skrypty mapowania i obsługi formularza -->
+            <script>
+                const logisticsMapping = {
+                    LandUnits: { label: "Jednostki lądowe", subtypes: ["Hoplite","SteamGiant","Swordsman","Spearman","Sulphur","Archer","Slinger","Mortar","Catapult","Ram","BalloonBombardier","Gyrocopter","Cook","Doctor"] },
+                    NavalUnits: { label: "Jednostki morskie", subtypes: ["SteamRam","FireShip","RamShip","BallistaShip","CatapultShip","MortarShip","DivingBoat","RocketShip","BalloonCarrier","PaddleSpeedboat","Tender","CargoShip","PhoenicianMerchantShip","Freighter","PhoenicianFreighterer"] },
+                    RawMaterials: { label: "Surowce", subtypes: ["Money","Wood","Wine","Stone","Crystal","Sulphur"] }
+                };
+                document.addEventListener("DOMContentLoaded", () => {
+                    const typeSel = document.getElementById("type_order");
+                    const subSel = document.getElementById("subtype_order");
+                    for (const [key, cfg] of Object.entries(logisticsMapping)) {
+                        typeSel.append(new Option(cfg.label, key));
+                    }
+                    typeSel.addEventListener("change", () => {
+                        const cfg = logisticsMapping[typeSel.value] || { subtypes: [] };
+                        subSel.innerHTML = '<option value="" disabled selected>— wybierz podtyp —</option>';
+                        if (cfg.subtypes.length) {
+                            subSel.disabled = false;
+                            cfg.subtypes.forEach(pt => subSel.append(new Option(pt, pt)));
+                        } else {
+                            subSel.disabled = true;
+                        }
+                    });
+                });
+            </script>
+        </main>
+    </div>
+</body>
+</html>
+

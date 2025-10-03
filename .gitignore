@@ -1,0 +1,9 @@
+db/db_usersv.db
+venv/
+app.log
+.env
+.env.*
+env.py
+migrations
+CheckIfDate
+__pycache__

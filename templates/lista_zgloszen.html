@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Lista zgłoszeń</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Dodatkowe style dla tabeli */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Lista zgłoszeń</h1>
+        {% if zgloszenia %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Użytkownik</th>
+                        <th>Treść zgłoszenia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for zg in zgloszenia %}
+                    <tr>
+                        <td>{{ zg.id }}</td>
+                        <td>{{ zg.data.strftime('%Y-%m-%d %H:%M:%S') if zg.data else '' }}</td>
+                        <td>{{ zg.user.username if zg.user else 'Anonimowy' }}</td>
+                        <td>{{ zg.tresc }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Brak zgłoszeń.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

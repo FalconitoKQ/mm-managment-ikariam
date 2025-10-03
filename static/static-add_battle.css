@@ -1,0 +1,125 @@
+/* Styl dla kontenera formularza */
+.battle-form {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Nagłówek formularza */
+.battle-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Sekcje formularza */
+.battle-form .form-group {
+    margin-bottom: 15px;
+}
+
+/* Etykiety formularza */
+.battle-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Pola tekstowe i listy rozwijane */
+.battle-form input[type="text"],
+.battle-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Podświetlenie pola w trakcie edycji */
+.battle-form input[type="text"]:focus,
+.battle-form select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Przycisk */
+.battle-form button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efekt hover dla przycisku */
+.battle-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Stylizacja przycisku w trakcie kliknięcia */
+.battle-form button:active {
+    background-color: #003f7f;
+}
+
+/* Stylizacja błędnych pól (opcjonalne) */
+.battle-form input.error {
+    border-color: #ff0000;
+    background-color: #ffe6e6;
+}
+
+/* Styl dla małych ekranów (telefony) */
+@media (max-width: 768px) {
+    .battle-form {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .battle-form h2 {
+        font-size: 20px;
+    }
+
+    .battle-form input[type="text"],
+    .battle-form select {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .battle-form button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Dodatkowy styl dla bardzo małych ekranów (np. starsze telefony) */
+@media (max-width: 480px) {
+    .battle-form h2 {
+        font-size: 18px;
+    }
+
+    .battle-form input[type="text"],
+    .battle-form select {
+        font-size: 12px;
+    }
+
+    .battle-form button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}

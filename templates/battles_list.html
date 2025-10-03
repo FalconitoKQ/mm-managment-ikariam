@@ -1,0 +1,142 @@
+<!-- battles_list.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <!-- Ulepszone, aby strona była responsywna na urządzeniach mobilnych -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Bitew</title>
+    <!-- Jeżeli masz wspólny arkusz stylów, możesz podłączyć go tutaj -->
+    <link rel="stylesheet" href="/static/static-battles_list.css">
+    <!-- <style>
+        /* Podstawowe style dla całego dokumentu */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+        /* Navigation jest wczytywana z pliku navigation.html */
+
+        /* Główna zawartość strony */
+        .main-content {
+            margin-left: 270px; /* dzięki temu treść nie zachodzi na panel nawigacji */
+            padding: 20px;
+        }
+        .main-content h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        /* Przycisk dodawania nowej bitwy */
+        .add-battle-button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .add-battle-button:hover {
+            background-color: #4cae4c;
+        }
+
+        /* Kontener do przewijania tabeli w poziomie, jeśli jest szeroka */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        /* Style tabeli */
+        table {
+            width: 100%;
+            max-width: 1200px;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #444;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsywność dla mniejszych ekranów */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 220px; /* nawigacja staje się węższa */
+            }
+            table, th, td {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 200px;
+            }
+            table, th, td {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .add-battle-button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style> -->
+</head>
+<body>
+    <!-- Wstawiamy panel nawigacji z odrębnego pliku -->
+    {% include 'navigation.html' %}
+
+    <div class="main-content">
+        <h1>Lista Bitew</h1>
+        <div>
+            <!-- Przycisk dodawania nowej bitwy z ikoną -->
+            <a href="{{ url_for('battle.add_battle') }}">
+                <button class="add-battle-button">➕ Dodaj nową bitwę</button>
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nazwa miasta</th>
+                        <th>Koordynaty</th>
+                        <th>Typ bitwy</th>
+                        <th>Nazwa przeciwnika</th>
+                        <th>Szczegóły</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for battle in battles %}
+                    <tr>
+                        <td>{{ battle.id_add_battle_db }}</td>
+                        <td>{{ battle.city_name }}</td>
+                        <td>{{ battle.coordinates }}</td>
+                        <td>{{ battle.battle_type }}</td>
+                        <td>{{ battle.opponent_name }}</td>
+                        <td><a href="{{ url_for('battle.battle_detail', battle_id=battle.id_add_battle_db) }}">Zobacz</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

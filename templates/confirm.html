@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Potwierdź nadpisanie</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static-battle_detail.css') }}">
+    <style>
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .main-container {
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Nawigacja po lewej -->
+    <div class="navigation-wrapper">
+        {% include 'navigation.html' %}
+    </div>
+
+    <!-- Główna sekcja strony -->
+    <div class="strona">
+        <div class="content-container">
+            <!-- Lewa kolumna może być pusta albo zawierać coś innego -->
+            <div class="left-column">
+            </div>
+
+            <!-- Prawa kolumna z częścią główną -->
+            <div class="right-column">
+                <!-- Obsługa flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                      <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+
+                <h1>Potwierdź nadpisanie</h1>
+
+                <p>
+                    Slot czasowy <strong>{{ slot.time }}</strong> 
+                    jest już zajęty przez <strong>{{ slot.user }}</strong> 
+                    ({{ slot.units }} jednostek).
+                </p>
+                <p>
+                    Czy na pewno chcesz nadpisać i zapisać się na ten slot czasowy?
+                </p>
+
+                <form method="post" style="margin-top: 20px;">
+                    <!-- Dodany token CSRF -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit">Tak, kontynuuj</button>
+                    <!-- link do anulowania / powrotu -->
+                    <a href="{{ url_for('battle_detail', battle_id=slot.battle_id) }}">Anuluj</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

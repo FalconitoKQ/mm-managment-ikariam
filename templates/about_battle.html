@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O bitwie</title>
+    <link rel="stylesheet" href="../static/">
+</head>
+<body>
+    <div class="container">
+        <!-- Dodano sekcję nawigacji -->
+        <div class="navigation-wrapper">
+            {% include 'navigation.html' %}
+        </div>
+        
+        <!-- Sekcja formularza -->
+        <div class="mt-5">
+            <h1 class="text-center">O bitwie</h1>
+            <form action="" method="POST">
+                <!-- Dodany token CSRF -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-3">
+                    <label for="stock_taran_parowy" class="form-label">Taran parowy</label>
+                    <input type="number" id="stock_taran_parowy" name="stock_taran_parowy" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock_okret_z_taranem" class="form-label">Okręt z taranem</label>
+                    <input type="number" id="stock_okret_z_taranem" name="stock_okret_z_taranem" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock_krazownik" class="form-label">Krążownik</label>
+                    <input type="number" id="stock_krazownik" name="stock_krazownik" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock_balonowiec" class="form-label">Balonowiec</label>
+                    <input type="number" id="stock_balonowiec" name="stock_balonowiec" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

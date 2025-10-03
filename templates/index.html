@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel główny</title>
+  <link rel="stylesheet" href="../static/style-index.css">
+</head>
+<body>
+  <div class="container">
+    <div class="navigation-wrapper">
+      {% include 'navigation.html' %}
+    </div>
+    <div class="main-content">
+      <h1>Dane bitew</h1>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Miasto</th>
+              <th>Koordynaty</th>
+              <th>Czas rundy taran parowy</th>
+              <th>Czas rundy okręt z taranem</th>
+              <th>Czas rundy krazownik</th>
+              <th>Czas rundy balonowiec</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for battle in battles %}
+              {% set data = latest_data[battle.id_add_battle_db] %}
+              <tr>
+                <td>{{ battle.city_name }}</td>
+                <td>{{ battle.coordinates }}</td>
+                <td>
+                  {% if data and data.time_round_for_taran_parowy %}
+                    {{ data.time_round_for_taran_parowy.strftime("%Y-%m-%d %H:%M:%S") }}
+                  {% else %}
+                    Brak danych
+                  {% endif %}
+                </td>
+                <td>
+                  {% if data and data.time_round_for_okret_z_taranem %}
+                    {{ data.time_round_for_okret_z_taranem.strftime("%Y-%m-%d %H:%M:%S") }}
+                  {% else %}
+                    Brak danych
+                  {% endif %}
+                </td>
+                <td>
+                  {% if data and data.time_round_for_krazownik %}
+                    {{ data.time_round_for_krazownik.strftime("%Y-%m-%d %H:%M:%S") }}
+                  {% else %}
+                    Brak danych
+                  {% endif %}
+                </td>
+                <td>
+                  {% if data and data.time_round_for_balonowiec %}
+                    {{ data.time_round_for_balonowiec.strftime("%Y-%m-%d %H:%M:%S") }}
+                  {% else %}
+                    Brak danych
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="buttons">
+        <button onclick="location.href='dane_glowne.html'">Przejdź do danych głównych</button>
+        <button onclick="location.href='straty.html'">Przejdź do strat</button>
+        <button onclick="location.href='ostatnie_aktualizacje.html'">Przejdź do ostatnich aktualizacji</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.sidebar a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetHref = this.getAttribute('href');
+        if (targetHref === "{{ url_for('auth.logout') }}") {
+          return;
+        }
+        e.preventDefault();
+        const targetElement = document.querySelector(targetHref);
+        if (targetElement) {
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

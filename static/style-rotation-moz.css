@@ -1,0 +1,149 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth;
+}
+
+/* Main Content Styles */
+.main-content {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Grid Container Styles */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Single column layout on smaller screens */
+    }
+
+    .main-content {
+        margin: 10px;
+    }
+}
+
+/* Grid Item Styles */
+.grid-item {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-height: 400px; /* Maksymalna wysokość każdego elementu gridu */
+    overflow: auto; /* Umożliwia przewijanie zawartości, jeśli przekracza maksymalną wysokość */
+}
+
+/* Header Styles */
+h1, h2 {
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+h3 {
+    color: #555;
+    margin: 20px 0 10px 0;
+}
+
+/* Paragraph Styles */
+p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Sidebar Navigation Styles */
+.custom-sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.custom-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.custom-sidebar ul li {
+    padding: 10px 20px;
+}
+
+.custom-sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-sidebar ul li a:hover {
+    background-color: #575757;
+}
+
+/* Wyloguj Button Styles */
+.custom-sidebar ul li a.logout-button {
+    background-color: #d9534f; /* Czerwony kolor dla wyróżnienia */
+    color: #fff; /* Biały tekst */
+    font-weight: bold;
+    text-align: center;
+}
+
+.custom-sidebar ul li a.logout-button:hover {
+    background-color: #c9302c; /* Ciemniejszy odcień na hover */
+}
+
+.custom-sidebar ul li a.logout-button:active {
+    background-color: #ac2925; /* Jeszcze ciemniejszy odcień na aktywację */
+}
+
+/* Content Offset for Sidebar */
+.main-content {
+    margin-left: 270px; /* Dodajemy margines, aby treść nie nachodziła na sidebar */
+    transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .custom-sidebar {
+        width: 200px;
+    }
+    .main-content {
+        margin-left: 220px;
+    }
+}
+

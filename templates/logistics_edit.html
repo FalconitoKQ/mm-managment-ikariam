@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Edycja zlecenia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edycja zlecenia nr {{ order.id_order }}</h2>
+
+        <form method="POST">
+            <!-- Token CSRF -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="quantity">Ilość:</label>
+            <input type="number" name="quantity" id="quantity" value="{{ order.quantity }}" min="1" required>
+
+            <label for="status">Status:</label>
+            <select name="status" id="status" required>
+                <option value="active" {% raw %}{% if order.status.name == 'active' %}selected{% endif %}{% endraw %}>Aktywna</option>
+                <option value="disabled" {% raw %}{% if order.status.name == 'disabled' %}selected{% endif %}{% endraw %}>Wyłączona</option>
+            </select>
+
+            <button type="submit">Zapisz zmiany</button>
+        </form>
+
+        <a href="{{ url_for('logistics.logistics_index') }}">← Powrót do listy zleceń</a>
+    </div>
+</body>
+</html>
