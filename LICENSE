@@ -1,0 +1,54 @@
+MM Management Non-Commercial License 1.0 (MM-NC-1.0)
+
+Copyright (c) 2025, Łukasz Kłak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the “Software”), to use,
+copy, modify, and distribute the Software and derivative works, for
+NON-COMMERCIAL purposes only, subject to the following terms:
+
+1) Non-Commercial Use Only
+   You may not sell, license for a fee, or otherwise commercialize the Software
+   or any derivative works. This includes, without limitation:
+   - selling copies, licenses, or access to the Software,
+   - using the Software as part of a paid product or service,
+   - offering the Software as a paid SaaS or hosted service,
+   - delivering the Software as part of paid consulting or custom work.
+
+2) Attribution
+   You must retain all copyright notices, license text, and author attribution
+   in source distributions. If the Software provides an “About” or similar UI
+   section, reasonable attribution there is appreciated (but not required).
+
+3) Notice of Changes
+   If you modify the Software, you must add a clear notice in the source
+   indicating that you changed the files, along with the date and a summary of
+   the changes.
+
+4) No Trademark Rights
+   This license does not grant permission to use the author’s or project’s names,
+   logos, or trademarks.
+
+5) No Warranty
+   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+6) Termination
+   Any breach of this license automatically terminates your rights under it.
+   Upon termination, you must cease use and distribution and destroy all copies.
+
+7) Commercial Licensing
+   For commercial use (including resale or use in paid products/services), please
+   contact the author to obtain a separate commercial license.
+
+Definitions
+- “Non-Commercial” means use that is not intended for or directed toward
+  commercial advantage or monetary compensation.
+- “Derivative works” means any modifications or works based on the Software.
+
+END OF TERMS
