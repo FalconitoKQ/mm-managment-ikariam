@@ -2,7 +2,7 @@
 
 > **Disclaimer:** Unofficial fan project. Not affiliated with Gameforge or the Ikariam team.
 
-A full-stack Flask web application that helps **Ikariam** alliances manage resources and coordination. It automates repetitive tasks and improves communication between players. The app ships with a browser UI (Jinja templates + static assets) and a Python backend. **SQLite** is used by default for a zero-setup database. **Docker** is supported.
+A full-stack Flask web application that helps **Ikariam** alliances manage resources and coordination. It automates repetitive tasks and improves communication between players. The app ships with a browser UI and a Python backend. **SQLite** is used by default for a zero-setup database. **Docker** is supported.
 
 ---
 
@@ -22,13 +22,12 @@ A full-stack Flask web application that helps **Ikariam** alliances manage resou
 ## Features
 - Alliance **resource & logistics** tracking
 - Planning views (e.g., **logistics**, **battles**, **admin**, **users/roles**)
-- Clean browser UI with **Jinja2** templates and static assets
 - Lightweight setup with **SQLite** by default
 
 ---
 
 ## Tech Stack
-- **Backend:** Python 3, Flask (Jinja2 templates)
+- **Backend:** Python 3, Flask
 - **Persistence:** SQLAlchemy (ORM), SQLite (default)
 - **Migrations:** Alembic (when configured)
 - **Observability:** Python `logging`
@@ -44,7 +43,7 @@ A full-stack Flask web application that helps **Ikariam** alliances manage resou
 ├── routes/              # Flask Blueprints (HTTP endpoints)
 ├── services/            # Application services / business logic
 ├── static/              # Public assets: CSS
-├── templates/           # Jinja2 templates (HTML)
+├── templates/           # templates (HTML)
 ├── config.py            # Base configuration (env, DB URI, etc.)
 ├── security_config.py   # Security-related settings (CSRF, CORS, headers)
 ├── run.py               # App entrypoint (Flask app factory / CLI)
@@ -77,9 +76,12 @@ python3 run.py
 # open http://localhost:5500 or http://127.0.0.1:5500
 ```
 ### 2) Build and run from the project root
+```txt
 ├─ Dockerfile
 ├─ .dockerignore
 └─ .gitignore
+```
+comments:
 ```bash
 # build image
 docker build -t mm-managment-ikariam:latest .
