@@ -90,6 +90,12 @@ docker run -d --name mm-app -p 5000:5000 mm-managment-ikariam:latest
 # open http://localhost:5500
 ```
 
+If you want to log in for the first time then type (default):
+```txt
+login: admin
+password: admin
+```
+
 #### Handy comments:
 
 ```bash
